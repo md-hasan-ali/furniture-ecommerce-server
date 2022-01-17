@@ -33,6 +33,19 @@ async function run() {
             const result = await productCollection.find(query).toArray();
             res.send(result);
         })
+        // Add New product 
+        app.post('/addNewProduct', async (req, res) => {
+            const query = req.body;
+            const result = await productCollection.insertOne(query);
+            res.send(result);
+        })
+        // Delete Single product of productCollection
+        app.delete('/products/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: ObjectId(id) }
+            const result = await productCollection.deleteOne(query);
+            res.send(result);
+        })
     }
     finally {
         // await client.close()
