@@ -21,6 +21,7 @@ async function run() {
         const database = client.db('furnitures');
         const productCollection = database.collection('products');
         const reviewCollection = database.collection('reviews');
+        const ordersCollection = database.collection('orders');
 
         // get products 
         app.get('/products', async (req, res) => {
@@ -58,6 +59,32 @@ async function run() {
             const result = await reviewCollection.find({}).toArray();
             res.send(result);
         })
+        // post new order 
+        app.post('/orders', async (req, res) => {
+            const query = req.body;
+            const result = await ordersCollection.insertOne(query);
+            res.send(result);
+        })
+        // get all orders
+        app.get('/orders', async (req, res) => {
+            const result = await ordersCollection.find({}).toArray();
+            res.send(result);
+        })
+        // get single order
+        app.delete('/singleOrder/:id', async (req, res) => {
+            const id = req.params;
+            const query = { _id: ObjectId(id) }
+            const result = await ordersCollection.deleteOne(query);
+            res.send(result);
+        })
+        // get myorders 
+        app.get('/myOrders/:email', async (req, res) => {
+            const email = req.params.email;
+            const result = await ordersCollection.find({ email }).toArray();
+            res.send(result)
+        })
+        // delete single order from my orders
+        app.delete
     }
     finally {
         // await client.close()
