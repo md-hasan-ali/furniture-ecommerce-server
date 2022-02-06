@@ -44,9 +44,11 @@ async function run() {
         // Delete Single product of productCollection
         app.delete('/products/:id', async (req, res) => {
             const id = req.params.id;
-            const query = { _id: ObjectId(id) }
-            const result = await productCollection.deleteOne(query);
-            res.send(result);
+            console.log(id)
+            // const query = { _id: ObjectId(id) }
+            // console.log(query)
+            // const result = await productCollection.deleteOne(query);
+            // res.send(result);
         })
         // Add Review 
         app.post('/addReview', async (req, res) => {
@@ -70,13 +72,12 @@ async function run() {
             const result = await ordersCollection.find({}).toArray();
             res.send(result);
         })
-        // get single order
-        app.delete('/singleOrder/:id', async (req, res) => {
-            const id = req.params;
-            const query = { _id: ObjectId(id) }
-            const result = await ordersCollection.deleteOne(query);
-            res.send(result);
-        })
+        // delete single order from myOrders 
+        // app.delete('/singleOrder/:id', async (req, res) => {
+        //     const id = req.params.id;
+        //     const query = { _id: ObjectId(id) }
+        //     console.log(query);
+        // })
         // get myorders 
         app.get('/myOrders/:email', async (req, res) => {
             const email = req.params.email;
@@ -84,7 +85,13 @@ async function run() {
             res.send(result)
         })
         // delete single order from my orders
-        app.delete
+        // app.delete('/myOrders/:email/:id', async (req, res) => {
+        //     const id = req.params.id;
+        //     console.log(id)
+        //     const query = { _id: ObjectId(id) }
+        //     const result = await ordersCollection.deleteOne(query);
+        //     console.log(result)
+        // })
     }
     finally {
         // await client.close()
