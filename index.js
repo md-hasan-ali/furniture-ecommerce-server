@@ -22,6 +22,7 @@ async function run() {
         const productCollection = database.collection('products');
         const reviewCollection = database.collection('reviews');
         const ordersCollection = database.collection('orders');
+        const usersCollection = database.collection('users');
 
         // get products 
         app.get('/products', async (req, res) => {
@@ -93,6 +94,41 @@ async function run() {
             const query = { _id: (id) }
             const result = await ordersCollection.deleteOne(query);
             res.send(result)
+        })
+        // User Created of website for authentication
+        app.post('/users', async (req, res) => {
+            const query = req.body;
+            const result = await usersCollection.insertOne(query);
+            res.send(result);
+        })
+        // update user of users 
+        app.put('/users', async (req, res) => {
+            const user = req.body;
+            const filter = { email: user.email }
+            const options = { upsert: true };
+            const updateDoc = { $set: user };
+            const result = await usersCollection.updateOne(filter, updateDoc, options);
+            res.send(result);
+        })
+        // make admin user 
+        app.put('/users/admin', async (req, res) => {
+            const user = req.body;
+            console.log(user)
+            const filter = { email: user.email }
+            const updateDoc = { $set: { role: 'admin' } }
+            const result = await usersCollection.updateOne(filter, updateDoc);
+            res.send(result);
+        })
+        // get admin email 
+        app.get('/users/:email', async (req, res) => {
+            const email = req.params.email;
+            const query = { email: email }
+            const user = await usersCollection.findOne(query);
+            let isAdmin = false;
+            if (user?.role === 'admin') {
+                isAdmin = true;
+            }
+            res.send({ admin: isAdmin });
         })
     }
     finally {
