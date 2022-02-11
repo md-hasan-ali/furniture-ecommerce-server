@@ -45,10 +45,10 @@ async function run() {
         app.delete('/products/:id', async (req, res) => {
             const id = req.params.id;
             console.log(id)
-            // const query = { _id: ObjectId(id) }
-            // console.log(query)
-            // const result = await productCollection.deleteOne(query);
-            // res.send(result);
+            const query = { _id: ObjectId(id) }
+            console.log(query)
+            const result = await productCollection.deleteOne(query);
+            res.send(result);
         })
         // Add Review 
         app.post('/addReview', async (req, res) => {
@@ -72,12 +72,15 @@ async function run() {
             const result = await ordersCollection.find({}).toArray();
             res.send(result);
         })
-        // delete single order from myOrders 
-        // app.delete('/singleOrder/:id', async (req, res) => {
-        //     const id = req.params.id;
-        //     const query = { _id: ObjectId(id) }
-        //     console.log(query);
-        // })
+
+        // delete single order from manageAllOrder 
+        app.delete('/orders/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: (id) }
+            const result = await ordersCollection.deleteOne(query);
+            res.send(result);
+        })
+
         // get myorders 
         app.get('/myOrders/:email', async (req, res) => {
             const email = req.params.email;
@@ -85,13 +88,12 @@ async function run() {
             res.send(result)
         })
         // delete single order from my orders
-        // app.delete('/myOrders/:email/:id', async (req, res) => {
-        //     const id = req.params.id;
-        //     console.log(id)
-        //     const query = { _id: ObjectId(id) }
-        //     const result = await ordersCollection.deleteOne(query);
-        //     console.log(result)
-        // })
+        app.delete('/myOrders/:email/:id', async (req, res) => {
+            const id = req.params.id;
+            const query = { _id: (id) }
+            const result = await ordersCollection.deleteOne(query);
+            res.send(result)
+        })
     }
     finally {
         // await client.close()
